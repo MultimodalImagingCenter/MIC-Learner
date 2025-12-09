@@ -1,7 +1,7 @@
 # Model and data
 
 ## Data
-The training data consists of subset of the Cellpose and Cellpose2 datasets :
+The training data consists of subset of the Cellpose and Cellpose2 datasets (available at https://www.cellpose.org/dataset):
 fluorescently labelled cytoplasm with or without an extra nuclear channel,
 brightfield microscopy,
 membrane-labelled cells.

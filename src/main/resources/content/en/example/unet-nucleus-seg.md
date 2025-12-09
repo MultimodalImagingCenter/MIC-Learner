@@ -1,6 +1,10 @@
 # Model and data
-The model is a **U-Net** from the **BioImage Model Zoo**, available at [bioimage.io/affable-shark](https://bioimage.io/#/artifacts/affable-shark). 
-It was trained to segment instances of **nuclei** in fluorescence microscopy images.
+This model is a **U-Net** from the [**BioImage Model Zoo**](https://bioimage.io/#/models),
+accessible at [bioimage.io/affable-shark](https://bioimage.io/#/artifacts/affable-shark),
+and was developed by Constantin Pape (EMBL Heidelberg).
+It was trained using data from the Data Science Bowl Nucleus Segmentation Challenge.
+
+Designed for instance segmentation, this network identifies instances of **nuclei** in fluorescence microscopy images.
 It predicts boundary maps and foreground probabilities for nucleus segmentation in
 different light microscopy modalities, mainly with DAPI staining.
 

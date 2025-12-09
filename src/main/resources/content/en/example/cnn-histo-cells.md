@@ -1,7 +1,8 @@
 # Model and data
 
 ## Data
-The data comes from a public dataset, available on [zenodo](https://zenodo.org/records/1214456)
+This model was trained with the dataset _100,000 histological images of human colorectal cancer and healthy tissue_ 
+(Kather, Halama, & Marx, 2018), which is available on [zenodo](https://zenodo.org/records/1214456).
 
 **Data Description "NCT-CRC-HE-100K"**
 - This is a set of 100,000 non-overlapping image patches from hematoxylin & eosin (H&E) stained histological images of human colorectal cancer (CRC) and normal tissue.

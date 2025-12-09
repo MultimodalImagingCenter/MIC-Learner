@@ -2,7 +2,15 @@
 **This model can only be run with Java 11 (ImageJ default is Java 8)**
 
 # Model and data
-The model is a **U-Net** from the **BioImage Model Zoo**. This instance segmentation model was trained to segment ***B. subtilis*** cells in widefield microscopy images.
+The model is a **U-Net** from the **BioImage Model Zoo**.
+This instance segmentation model was trained to segment ***B. subtilis*** cells in widefield microscopy images.
+
+This model is a **U-Net** from the [**BioImage Model Zoo**](https://bioimage.io/#/models),
+accessible at [bioimage.io/placid-llama](https://bioimage.io/#/artifacts/placid-llama),
+and was developed by Estibaliz Gómez de Mariscal (Instituto Gulbenkian de Ciência).
+
+Designed for instance segmentation, this network identifies instances of ***B. subtilis*** cells in widefield microscopy images.
+It predicts boundary, background and foreground probabilities maps.
 
 # Processing
 

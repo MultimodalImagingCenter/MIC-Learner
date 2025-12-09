@@ -1,6 +1,11 @@
 # Model and data
-The model is a **U-Net** from the **BioImage Model Zoo**.
-This semantic segmentation model was trained to segment mitochondria in sections of nerve tissue from ***D. melanogaster***, imaged by transmission electron microscopy.
+This model is a **U-Net** from the [**BioImage Model Zoo**](https://bioimage.io/#/models), 
+accessible at [bioimage.io/shivering-raccoon](https://bioimage.io/#/artifacts/shivering-raccoon), 
+and was developed by Constantin Pape (EMBL Heidelberg). 
+It was trained using data from [the VNC dataset](http://dx.doi.org/10.6084/m9.figshare.856713). 
+
+Designed for semantic segmentation, this network identifies mitochondria in **D. melanogaster** nerve tissue sections 
+imaged with transmission electron microscopy.
 
 # Processing
 

@@ -17,7 +17,7 @@ They are composed of several specific types of layers:
     of the feature map.
 
 ![cnn_simplified](/contentImages/cnn_simplified.png){width=600}
-*Purwono & al. “Understanding of Convolutional Neural Network” (2023)*
+*CNN architecture. From Purwono et al., “Understanding of Convolutional Neural Network (CNN): A Review,” 2023, CC-BY-SA 4.0.*
 
 The first part of a CNN, often called the convolutional base, typically consists of a sequence of these three layer
 types (convolution + activation + pooling). The final output of this base is a set of highly processed feature maps,

@@ -20,4 +20,4 @@ The steps of this algorithm are as follows:
 * the same object, retaining only the most relevant box for each object detected.
 
 ![yolo simplified steps](/contentImages/yolo_simplified.jpg){width=400}
-*Redmon & al. “You Only Look Once: Unified, Real-Time Object Detection” (2016)*
+*YOLO simplified steps. From Redmon & al., “You Only Look Once: Unified, Real-Time Object Detection”, 2016*

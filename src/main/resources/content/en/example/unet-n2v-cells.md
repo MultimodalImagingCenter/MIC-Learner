@@ -1,7 +1,8 @@
 # Model and data
 
 ## Data
-The images are of cells obtained via **quantitative image-based cytometry (QIBC)**. These original images have a sufficiently high signal-to-noise ratio to be considered noise-free.
+The images are of cells obtained via **quantitative image-based cytometry (QIBC)**. These original images 
+have a sufficiently high signal-to-noise ratio to be considered noise-free.
 
 Artificial noise was added to the images. For each image, the intensity range (*e* = *i*<sub>max</sub> − *i*<sub>min</sub>) was measured. Then, Gaussian noise was added using the Gaussian noise function in ImageJ, with a standard deviation value of `std = 0.25 * e` (i.e., 25% of the intensity range).
 

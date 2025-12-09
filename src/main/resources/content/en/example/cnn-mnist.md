@@ -1,8 +1,10 @@
 # Model and data
 
 ## Data
-The data comes from a public dataset : MNIST dataset (Modified National Institute of Standards and Technology database),
-a database of handwritten digits
+The data comes from a public dataset : 
+MNIST dataset (Modified National Institute of Standards and Technology database, 
+LeCun, Cortes & Burges, 1998),
+a database of handwritten digits.
 
 **Data Description**
 - This is a set of 60,000 training images and 10,000 testing images, each with one handwritten digit (between 0 and 9).

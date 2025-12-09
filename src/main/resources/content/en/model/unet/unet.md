@@ -22,4 +22,4 @@ followed by an activation function (typically a **softmax** or **sigmoid** funct
 provides the final semantic segmentation, where each pixel in the output corresponds to a predicted class label.
 
 ![unet](/contentImages/unet_network.png){width=400}
-*Ronneberger & al. "U-Net: Convolutional Networks for Biomedical Image Segmentation" (2015)*
+*U-net architecture. From Ronneberger & al., "U-Net: Convolutional Networks for Biomedical Image Segmentation", 2015*
