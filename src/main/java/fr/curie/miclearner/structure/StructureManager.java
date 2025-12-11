@@ -1,4 +1,4 @@
-package fr.curie.gui;
+package fr.curie.miclearner.structure;
 
 import ij.IJ;
 import ij.Prefs;

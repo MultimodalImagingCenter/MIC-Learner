@@ -1,4 +1,4 @@
-package fr.curie.gui;
+package fr.curie.miclearner.structure;
 
 // associate the id of an example model with its name
 public class DisplayItem {

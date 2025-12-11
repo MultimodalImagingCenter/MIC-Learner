@@ -1,5 +1,8 @@
-package fr.curie.gui;
+package fr.curie.miclearner;
 
+import fr.curie.miclearner.panel.*;
+import fr.curie.miclearner.structure.NavigationStep;
+import fr.curie.miclearner.structure.StructureManager;
 import ij.IJ;
 import ij.plugin.frame.PlugInFrame;
 

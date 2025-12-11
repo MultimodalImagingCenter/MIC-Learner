@@ -1,5 +1,8 @@
-package fr.curie.gui;
+package fr.curie.miclearner.panel;
 
+import fr.curie.miclearner.MainApplication_Frame;
+import fr.curie.miclearner.structure.ContentLoader;
+import fr.curie.miclearner.structure.DisplayItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,14 +10,14 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class SubModelsListPanel extends ButtonDescriptionListPanel{
+public class  SubTasksListPanel extends ButtonDescriptionListPanel{
     private static final Logger log = LoggerFactory.getLogger(SubTasksListPanel.class);
-    private final String parentTaskId;
+    private final String parentModelId;
 
-    public SubModelsListPanel(MainApplication_Frame mainFrame, String pageTitle, String parentTaskId) {
+    public SubTasksListPanel(MainApplication_Frame mainFrame, String pageTitle, String parentModelId) {
         // The property key for the list of models is based on the parent task
-        super(mainFrame, pageTitle, parentTaskId + ".model");
-        this.parentTaskId = parentTaskId;
+        super(mainFrame, pageTitle, parentModelId + ".task");
+        this.parentModelId = parentModelId;
 
         BiConsumer<String, String> buttonHandler = this::displayFinalDescription;
 
@@ -22,33 +25,31 @@ public class SubModelsListPanel extends ButtonDescriptionListPanel{
         this.initializePanel();
     }
 
-
-    private void displayFinalDescription(String modelId, String modelName) {
+    private void displayFinalDescription(String taskId, String taskName) {
         try {
             //fetch title
-            String titleKey = propertyKey + "." + modelId + ".description.title";
+            String titleKey = propertyKey + "." + taskId + ".description.title";
             String title = uiStructure.getString(titleKey);
 
             // find markdown file + retrieve markdown content
-            String markdownFilePath = uiStructure.getModelDescriptionForTaskPath(parentTaskId, modelId);
+            String markdownFilePath = uiStructure.getTaskDescriptionForModelPath(parentModelId, taskId);
             String htmlContent = ContentLoader.loadAndParseMarkdown(markdownFilePath);
 
             // check that is runnable, and examples exist
-            boolean isRunnable = uiStructure.checkIfRunnable(parentTaskId, modelId);
+            boolean isRunnable = uiStructure.checkIfRunnable(taskId, parentModelId);
 
             if (isRunnable) {
                 //retrieve example models id
-                List<String> exampleIds = uiStructure.getExampleIds(parentTaskId, modelId);
-
-                // Convert IDs to DisplayItems for the combo box (display model names)
+                List<String> exampleIds = uiStructure.getExampleIds(taskId, parentModelId);
+                // Convert IDs to DisplayItems for the combo box.
                 List<DisplayItem> displayItems = uiStructure.getExampleDisplayItems(exampleIds);
 
                 // define action for the select button
-                // Action reads the selected ID from the description panel's combo box
+                // Action reads the selected ID from the description panel's combo box.
                 ActionListener comboBoxAction = e -> {
                     String selectedExampleId = descriptionPanel.getSelectedExampleId();
                     if (selectedExampleId != null && !selectedExampleId.trim().isEmpty()) {
-                        mainFrame.navigateToRunPage(selectedExampleId, modelName);
+                        mainFrame.navigateToRunPage(selectedExampleId, taskName);
                     } else {
                         System.err.println("Missing information for the model : " + selectedExampleId);
                     }
@@ -62,9 +63,8 @@ public class SubModelsListPanel extends ButtonDescriptionListPanel{
             }
         } catch (Exception e) {
             descriptionPanel.updateContentDisabled("Information", "<html><body>Configuration for this combination is incomplete.</body></html>");
-            System.err.println("Missing description/configuration for key base: " + propertyKey + "." + modelId);
+            System.err.println("Missing description/configuration for key base: " + propertyKey + "." + taskId);
             log.error("e: ", e);
         }
     }
-
 }

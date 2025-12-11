@@ -1,4 +1,4 @@
-package fr.curie.gui;
+package fr.curie.miclearner.structure;
 
 public class UseCaseConfig {
     private final String name;

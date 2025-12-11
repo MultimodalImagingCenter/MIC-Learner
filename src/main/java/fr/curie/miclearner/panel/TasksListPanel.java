@@ -1,4 +1,6 @@
-package fr.curie.gui;
+package fr.curie.miclearner.panel;
+
+import fr.curie.miclearner.MainApplication_Frame;
 
 import java.awt.event.ActionListener;
 import java.util.function.BiConsumer;

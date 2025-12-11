@@ -1,4 +1,4 @@
-package fr.curie.gui;
+package fr.curie.miclearner.structure;
 
 public class NavigationStep {
     private final String displayText; // Text to show (e.g., "Home", "Classification")

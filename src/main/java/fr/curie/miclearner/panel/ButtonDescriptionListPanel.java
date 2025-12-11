@@ -1,4 +1,7 @@
-package fr.curie.gui;
+package fr.curie.miclearner.panel;
+
+import fr.curie.miclearner.MainApplication_Frame;
+import fr.curie.miclearner.structure.ContentLoader;
 
 import java.awt.event.ActionListener;
 

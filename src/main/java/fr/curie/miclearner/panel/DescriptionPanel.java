@@ -1,8 +1,10 @@
-package fr.curie.gui;
+package fr.curie.miclearner.panel;
+
+import fr.curie.miclearner.structure.DisplayItem;
+import fr.curie.miclearner.structure.StructureManager;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;

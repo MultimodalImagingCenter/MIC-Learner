@@ -1,5 +1,9 @@
-package fr.curie.gui;
+package fr.curie.miclearner.panel;
 
+import fr.curie.miclearner.MainApplication_Frame;
+import fr.curie.miclearner.structure.ContentLoader;
+import fr.curie.miclearner.structure.StructureManager;
+import fr.curie.miclearner.structure.UseCaseConfig;
 import ij.IJ;
 import ij.ImagePlus;
 

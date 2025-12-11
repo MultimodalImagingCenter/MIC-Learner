@@ -1,4 +1,7 @@
-package fr.curie.gui;
+package fr.curie.miclearner.panel;
+
+import fr.curie.miclearner.MainApplication_Frame;
+import fr.curie.miclearner.structure.StructureManager;
 
 import javax.swing.*;
 import java.awt.*;
