@@ -221,13 +221,14 @@ public class StructureManager {
     }
 
     public String getDescriptionPath(String propertyKey, String itemId){
-        // eg. content/en/model/cnn/cnn.md
-        Path endPath = Paths.get(propertyKey,itemId,itemId + ".md");
+        // eg. content/en/model/cnn/cnn.md or content/en/task/classification/classification.md
+        Path endPath = Paths.get(propertyKey, itemId,itemId+".md"); // force "/" to avoid conflicts between "/" and "\"
         return String.valueOf(getContentPathOrDefault(endPath));
     }
 
 
     public String getModelDescriptionForTaskPath(String taskId, String modelId) {
+        // eg. content/en/task/classification/model/cnn.md
         Path endPath = Paths.get("task",taskId,"model", modelId + ".md");
         return String.valueOf(getContentPathOrDefault(endPath));
     }

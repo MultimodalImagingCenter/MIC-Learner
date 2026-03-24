@@ -3,15 +3,13 @@ package fr.curie.miclearner.panel;
 import fr.curie.miclearner.MainApplication_Frame;
 import fr.curie.miclearner.structure.ContentLoader;
 import fr.curie.miclearner.structure.DisplayItem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ij.IJ;
 
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.BiConsumer;
 
 public class  SubTasksListPanel extends ButtonDescriptionListPanel{
-    private static final Logger log = LoggerFactory.getLogger(SubTasksListPanel.class);
     private final String parentModelId;
 
     public SubTasksListPanel(MainApplication_Frame mainFrame, String pageTitle, String parentModelId) {
@@ -64,7 +62,7 @@ public class  SubTasksListPanel extends ButtonDescriptionListPanel{
         } catch (Exception e) {
             descriptionPanel.updateContentDisabled("Information", "<html><body>Configuration for this combination is incomplete.</body></html>");
             System.err.println("Missing description/configuration for key base: " + propertyKey + "." + taskId);
-            log.error("e: ", e);
+            IJ.log("e: "+ e);
         }
     }
 }

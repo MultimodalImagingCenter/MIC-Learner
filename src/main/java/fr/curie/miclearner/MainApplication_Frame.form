@@ -18,7 +18,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="[icon]"/>
+              <text value=""/>
             </properties>
           </component>
           <hspacer id="9cd72">
