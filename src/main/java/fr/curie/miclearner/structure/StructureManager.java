@@ -299,7 +299,6 @@ public class StructureManager {
                     useCaseProps.getProperty("macro.options")
             );
         } catch (IOException e) {
-            // Handle error: log it, maybe return null or throw a specific exception
             System.err.println("Could not load use case: " + useCaseFile);
             e.printStackTrace();
             return null;
