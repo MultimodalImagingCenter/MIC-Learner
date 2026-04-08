@@ -2,6 +2,7 @@ package fr.curie.miclearner.panel;
 
 import fr.curie.miclearner.structure.DisplayItem;
 import fr.curie.miclearner.structure.StructureManager;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -32,39 +33,60 @@ public class DescriptionPanel extends JPanel {
 
     public DescriptionPanel(StructureManager uiStructure) {
         // fetch texts for button
+        this.uiStructure = uiStructure;
         this.selectText = uiStructure.getString(SELECT_KEY, "Select");
         this.notAvailableText = uiStructure.getString(NOT_AVAILABLE_KEY, "Not Available");
 
-        // add root panel
-        this.setLayout(new BorderLayout(10, 10));
-        this.add(rootPanel, BorderLayout.CENTER);
+        initUI();
+    }
 
-        // default display settings
+    private void initUI() {
+        this.setLayout(new MigLayout("insets 15, fillx, wrap 1, hidemode 3"));
+
+        // title
+        titleLabel = new JLabel();
         titleLabel.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 16));
-        selectButton.setVisible(true);
-        selectButton.setEnabled(false);
-        modelSelectionBox.setVisible(false);
-        modelSelectionLabel.setVisible(false);
+        this.add(titleLabel, "align center, gapbottom 10");
 
+        // description area
+        descriptionArea = new JEditorPane();
+        descriptionArea.setContentType("text/html");
+        descriptionArea.setEditable(false);
+
+        // listener for the hyperlinks
         descriptionArea.addHyperlinkListener(e -> {
-            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                if (Desktop.isDesktopSupported()) {
-                    try {
-                        // Open the link in the default system browser
-                        Desktop.getDesktop().browse(e.getURL().toURI());
-                    } catch (IOException | URISyntaxException | NullPointerException ex) {
-                        // Handle potential errors (e.g. malformed URLs)
-                        System.err.println("Unable to open link: " + e.getDescription());
-                        ex.printStackTrace();
-                    }
-                }
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED && Desktop.isDesktopSupported()) {
+                try {
+                    // Open the link in the default system browser
+                    Desktop.getDesktop().browse(e.getURL().toURI()); }
+                catch (IOException | URISyntaxException ex) {
+                    System.err.println("Unable to open link: " + e.getDescription());
+                    ex.printStackTrace(); }
             }
         });
 
         // add description area to scrollPan, and scrollPane to Panel
         JScrollPane scrollPane = new JScrollPane(descriptionArea);
-        scrollPanel.add(scrollPane, BorderLayout.CENTER);
+        this.add(scrollPane, "grow, pushy");
 
+        // slection panel
+        JPanel selectPanel = new JPanel(new MigLayout("insets 5, hidemode 3, fillx", "[center, min!, shrink 0][center grow]"));
+
+        modelSelectionLabel = new JLabel();
+        modelSelectionBox = new JComboBox<>();
+        selectButton = new JButton(selectText);
+
+        selectPanel.add(modelSelectionLabel, "cell 0 0, hidemode 3");
+        selectPanel.add(modelSelectionBox, "cell 0 1, hidemode 3");
+        selectPanel.add(selectButton, "cell 1 0 1 2, , growy ");
+
+        // default settings
+        modelSelectionBox.setVisible(false);
+        modelSelectionLabel.setVisible(false);
+        selectButton.setVisible(true);
+        selectButton.setEnabled(false);
+
+        this.add(selectPanel, "growx, align center");
     }
 
     /**
@@ -104,11 +126,9 @@ public class DescriptionPanel extends JPanel {
 
         // make model selection visible
         modelSelectionBox.setModel(new DefaultComboBoxModel<>(exampleItemsList.toArray(new DisplayItem[0])));
+        modelSelectionLabel.setText(uiStructure.getString("buttonListPage.askModel.text", "Choose a model"));
         modelSelectionBox.setVisible(true);
         modelSelectionLabel.setVisible(true);
-
-        // reprendre ici
-        //modelSelectionBox.addActionListener();
 
         // Remove any previous action listeners to prevent duplicates
         for (ActionListener al : selectButton.getActionListeners()) {
@@ -152,8 +172,6 @@ public class DescriptionPanel extends JPanel {
         }
         return null;
     }
-
-
 
     /**
      * Resets the panel to its default "select an item" state.

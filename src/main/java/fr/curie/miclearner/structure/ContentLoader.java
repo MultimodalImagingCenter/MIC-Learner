@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 public class ContentLoader {
     private static final Parser parser;
     private static final HtmlRenderer renderer;
@@ -72,12 +71,10 @@ public class ContentLoader {
             public @NotNull LinkResolver apply(@NotNull LinkResolverBasicContext linkResolverBasicContext) {
                 return new ResourceLinkResolver();
             }
-
         }
 
         MutableDataSet options = new MutableDataSet();
         options.set(Parser.EXTENSIONS, Arrays.asList(AttributesExtension.create()));
-
 
         parser = Parser.builder(options).build();
         renderer = HtmlRenderer.builder(options)
@@ -113,6 +110,4 @@ public class ContentLoader {
             return "<html><body><b>Error:</b> Could not load content. See logs for details.</body></html>";
         }
     }
-
-
 }
