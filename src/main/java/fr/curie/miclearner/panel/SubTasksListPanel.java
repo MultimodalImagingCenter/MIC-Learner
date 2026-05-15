@@ -62,7 +62,7 @@ public class  SubTasksListPanel extends ButtonDescriptionListPanel{
         } catch (Exception e) {
             descriptionPanel.updateContentDisabled("Information", "<html><body>Configuration for this combination is incomplete.</body></html>");
             System.err.println("Missing description/configuration for key base: " + propertyKey + "." + taskId);
-            IJ.log("e: " + e);
+            IJ.log("e: "+ e);
         }
     }
 }

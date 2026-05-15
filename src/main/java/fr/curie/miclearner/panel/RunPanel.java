@@ -6,6 +6,7 @@ import fr.curie.miclearner.structure.StructureManager;
 import fr.curie.miclearner.structure.UseCaseConfig;
 import ij.IJ;
 import ij.ImagePlus;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -15,10 +16,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ResourceBundle;
 
 
 public class RunPanel extends JPanel{
-    private JPanel rootPanel;
     private JPanel runButtonsPanel;
     private JPanel descriptionPanel;
     private JButton exampleImageButton;
@@ -47,11 +48,47 @@ public class RunPanel extends JPanel{
             this.uiStructure = null;
         }
 
-        this.setLayout(new BorderLayout());
-        this.add(rootPanel, BorderLayout.CENTER);
+        initUI();
 
         // Setup listeners
         setupListeners();
+    }
+
+    private void initUI() {
+        this.setLayout(new MigLayout("insets 10, fill, wrap 1"));
+
+        titleLabel = new JLabel();
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        this.add(titleLabel, "align center, gapbottom 10");
+
+        descriptionArea = new JEditorPane();
+        descriptionArea.setContentType("text/html");
+        descriptionArea.setEditable(false);
+        scrollPane = new JScrollPane(descriptionArea);
+        this.add(scrollPane, "grow, pushy");
+
+        // button panel
+        JPanel runButtonsPanel = new JPanel(new MigLayout("insets 10, fillx", "[center, grow][center, grow]"));
+
+        defaultParamRButton = new JRadioButton(uiStructure.getString("runPage.useDefaultParam.rButton"));
+        userParamRButton = new JRadioButton(uiStructure.getString("runPage.useUserParam.rButton"));
+        defaultParamRButton.setSelected(true);
+
+        exampleImageButton = new JButton(uiStructure.getString("processPage.openExampleImage.button"));
+        userImageButton = new JButton(uiStructure.getString("processPage.openUserImage.button"));
+        runButton = new JButton(uiStructure.getString("processPage.run.button"));
+
+        // left column
+        runButtonsPanel.add(exampleImageButton, "cell 0 0, w 200!");
+        runButtonsPanel.add(new JLabel(uiStructure.getString("or.text")), "cell 0 1, align center");
+        runButtonsPanel.add(userImageButton, "cell 0 2, w 200!");
+
+        // right column
+        runButtonsPanel.add(defaultParamRButton, "cell 2 0");
+        runButtonsPanel.add(userParamRButton, "cell 2 1");
+        runButtonsPanel.add(runButton, "cell 2 2, w 150!");
+
+        this.add(runButtonsPanel, "growx, align center");
     }
 
     /**
@@ -208,7 +245,5 @@ public class RunPanel extends JPanel{
                 }
             }
         });
-
-
     }
 }

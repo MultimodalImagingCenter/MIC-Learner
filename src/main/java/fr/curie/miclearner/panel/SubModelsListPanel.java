@@ -64,6 +64,7 @@ public class SubModelsListPanel extends ButtonDescriptionListPanel{
         } catch (Exception e) {
             descriptionPanel.updateContentDisabled("Information", "<html><body>Configuration for this combination is incomplete.</body></html>");
             System.err.println("Missing description/configuration for key base: " + propertyKey + "." + modelId);
+            IJ.error(e.getMessage());
             IJ.log("e: " + e);
         }
     }

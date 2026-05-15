@@ -7,10 +7,12 @@ import ij.IJ;
 import ij.plugin.frame.PlugInFrame;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ResourceBundle;
 import java.util.Stack;
 
 public class MainApplication_Frame extends PlugInFrame {
@@ -52,14 +54,8 @@ public class MainApplication_Frame extends PlugInFrame {
     public MainApplication_Frame() {
         super("MIC learning Plug-in");
 
-        if (rootPanel == null) {
-            IJ.error("Plugin UI Error", "The main UI panel (rootPanel) could not be initialized from the form");
-        }
-
-        // Set the content of this PlugInFrame to be the rootPanel from the form
-        this.setLayout(new BorderLayout());
-        this.add(rootPanel, BorderLayout.CENTER);
-
+        // UI initialization
+        initUI();
 
         // forces the Manager to check if the user changed the language
         StructureManager.getInstance().refreshLanguage();
@@ -73,12 +69,47 @@ public class MainApplication_Frame extends PlugInFrame {
         // Set up the content area
         setupContentArea();
 
-
         this.pack();
-        this.setSize(new Dimension(750, 540));
+        this.setSize(new Dimension(900, 680));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
 
+    private void initUI() {
+        ResourceBundle bundle = ResourceBundle.getBundle("UIstrings");
+
+        // Setup rootPanel
+        rootPanel = new JPanel(new BorderLayout());
+
+        // Setup headerPanel
+        headerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        iconLabel = new JLabel("");
+        titleLabel = new JLabel(bundle.getString("app.title"));
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.ITALIC, 16));
+
+        gbc.gridx = 0; gbc.gridy = 0;
+        headerPanel.add(iconLabel, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 1;
+        headerPanel.add(titleLabel, gbc);
+
+        // 3. Setup contentAreaPanel
+        contentAreaPanel = new JPanel(new CardLayout());
+        contentAreaPanel.setBackground(new Color(0x272727));
+        contentAreaPanel.setBorder(new LineBorder(new Color(0x747474)));
+
+        // 4. Setup progressPanel
+        progressPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        progressPanel.setPreferredSize(new Dimension(10, 40));
+
+        // Assemble
+        rootPanel.add(headerPanel, BorderLayout.NORTH);
+        rootPanel.add(contentAreaPanel, BorderLayout.CENTER);
+        rootPanel.add(progressPanel, BorderLayout.SOUTH);
+
+        this.add(rootPanel);
     }
 
     private void createMainMenuBar() {
@@ -203,7 +234,6 @@ public class MainApplication_Frame extends PlugInFrame {
 
     private void rebuildProgress() {
         progressPanel.removeAll(); // Clear the old labels
-        progressPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
         for (int i = 0; i < navigationHistory.size(); i++) {
             final NavigationStep step = navigationHistory.get(i);
@@ -373,7 +403,6 @@ public class MainApplication_Frame extends PlugInFrame {
         return modelsPath;
     }
 
-
     // method for testing
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -386,6 +415,4 @@ public class MainApplication_Frame extends PlugInFrame {
             frame.setVisible(true);
         });
     }
-
-
 }

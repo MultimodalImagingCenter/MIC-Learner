@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -21,7 +22,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 
 public class ContentLoader {
     private static final Parser parser;
@@ -71,12 +71,10 @@ public class ContentLoader {
             public @NotNull LinkResolver apply(@NotNull LinkResolverBasicContext linkResolverBasicContext) {
                 return new ResourceLinkResolver();
             }
-
         }
 
         MutableDataSet options = new MutableDataSet();
         options.set(Parser.EXTENSIONS, Arrays.asList(AttributesExtension.create()));
-
 
         parser = Parser.builder(options).build();
         renderer = HtmlRenderer.builder(options)
@@ -88,9 +86,11 @@ public class ContentLoader {
      * Reads a resource file, converts it from Markdown to HTML with resolved image paths.
      */
     public static String loadAndParseMarkdown(String resourcePath) {
-        // The leading slash is important for getResourceAsStream
-        String fullPath = resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath;
 
+        // The leading slash is important for getResourceAsStream
+        String fullPath = resourcePath.startsWith(File.separator) ? resourcePath : File.separator + resourcePath;
+
+        fullPath = fullPath.replace('\\','/'); // for windows path
         try (InputStream is = ContentLoader.class.getResourceAsStream(fullPath)) {
             if (is == null) {
                 System.err.println("Resource not found: " + fullPath);
@@ -110,6 +110,4 @@ public class ContentLoader {
             return "<html><body><b>Error:</b> Could not load content. See logs for details.</body></html>";
         }
     }
-
-
 }
