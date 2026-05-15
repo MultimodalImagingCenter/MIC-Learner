@@ -1,10 +1,8 @@
 # Changelog
-## [1.1.0] - Unreleased
+## [1.1.0] - 2026-05-15
 ### Added
-- **Model Download System**: New plug-in for automated AI model installation from Zenodo or custom URLs.
-- **Models Manifest Architecture**: JSON file supporting selective ZIP extraction and custom destination paths.
+- **model download**: New plug-in for automated AI model installation from Zenodo or custom URLs with **models manifest architecture**: JSON file supporting selective ZIP extraction and custom destination paths.
 
-## [1.0.1] - 2026-04-08
 ### Fixed
 - get resources with windows path
 
