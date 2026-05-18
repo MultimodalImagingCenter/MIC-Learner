@@ -1,16 +1,19 @@
+
+
 package fr.curie.miclearner.panel;
 
-import fr.curie.miclearner.MainApplication_Frame;
-import fr.curie.miclearner.structure.StructureManager;
-
+import ij.IJ;
+import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.function.BiConsumer;
+import fr.curie.miclearner.MainApplication_Frame;
+import fr.curie.miclearner.structure.StructureManager;
+
 
 public class GenericButtonListPanel extends JPanel {
 
-    private JPanel rootPanel;
     private JSplitPane splitPane;
     private JPanel buttonsDisplayPanel;
     private JLabel questionLabel;
@@ -18,13 +21,11 @@ public class GenericButtonListPanel extends JPanel {
     private JPanel buttonsPanel;
 
     protected MainApplication_Frame mainFrame;
-
     protected StructureManager uiStructure;
     protected String pageTitle;
-    protected String propertyKey; // context of the list,
+    protected String propertyKey;
     // e.g., "task" or "model" : list of all available tasks or models
     // or "cnn.task", "detection.model" : list of sub-tasks for cnn, of sub-models for detection...
-
     protected BiConsumer<String, String> buttonActionHandler;
 
     /**
@@ -35,10 +36,7 @@ public class GenericButtonListPanel extends JPanel {
      * @param propertyKey The prefix for button name keys (e.g., "task" for "task.classification.name").
      *
      */
-    public GenericButtonListPanel(MainApplication_Frame mainFrame,
-                                  String pageTitle,
-                                  String propertyKey) {
-
+    public GenericButtonListPanel(MainApplication_Frame mainFrame, String pageTitle, String propertyKey) {
         this.mainFrame = mainFrame;
         this.pageTitle = pageTitle;
         this.propertyKey = propertyKey;
@@ -48,125 +46,78 @@ public class GenericButtonListPanel extends JPanel {
             System.err.println(getClass().getSimpleName() + ": Error loading resource bundle");
             this.uiStructure = null;
         }
+        initUI();
+
+    }
+
+    private void initUI() {
+        this.setLayout(new BorderLayout());
+
+        // top Label setup
+        questionLabel = new JLabel();
+        questionLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // button list container
+        buttonsPanel = new JPanel(new MigLayout("wrap 1, fillx, align center"));
+
+        // scrollPane setup
+        scrollPane = new JScrollPane(buttonsPanel);
+        scrollPane.setBorder(null);
+
+        // left Panel container
+        buttonsDisplayPanel = new JPanel(new MigLayout("fill, flowy"));
+        buttonsDisplayPanel.add(questionLabel, "w 0:100%:100%, shrink"); // Take as little space as possible
+        buttonsDisplayPanel.add(scrollPane, "push, grow"); // Take remaining space
+
+        // splitPane setup
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, buttonsDisplayPanel, new JPanel());
+        splitPane.setResizeWeight(0.15);
+
+        this.add(splitPane, BorderLayout.CENTER);
     }
 
     public void initializePanel() {
-        this.setLayout(new BorderLayout());
-        this.add(rootPanel, BorderLayout.CENTER);
-
-
-        // give 15% of the space to the left panel
-        splitPane.setResizeWeight(0.15);
-
-
-        // add buttons to the left panel
         populateButtons();
-
     }
 
     protected void populateButtons() {
-        // check if bundle existing
+        buttonsPanel.removeAll();
         if (uiStructure == null) {
-            buttonsPanel.add(new JLabel("Error: button list not loaded."));
+            buttonsPanel.add(new JLabel("Error: button list not loaded."), "align center");
             return;
         }
 
         // fetch question text to display at the top of button list
-        String question = uiStructure.getString(propertyKey+".askChoice.text", "choose an option");
-        questionLabel.setText(question);
+        String question = uiStructure.getString(propertyKey + ".askChoice.text", "choose an option");
+        String html = "<html><body style='width: 100%;'>" + question + "</body></html>";
+        questionLabel.setText(html);
 
-        // define constraints
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        // Spacer to push content down
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        JPanel topSpacer = new JPanel();
-        topSpacer.setOpaque(false); // Make it invisible
-        buttonsPanel.add(topSpacer, gbc);
-
-        // Default constraints for all buttons
-        gbc.gridx = 0;
-        gbc.gridwidth = 1;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(1, 5, 1, 5); // padding
-
-        // fetch list of item ids
         List<String> itemIds = uiStructure.getIdsList(propertyKey);
-        if (itemIds.isEmpty()){
-            buttonsPanel.add(new JLabel("\"<html>No items defined for this list.</html>\""));
-            return;
-        }
+        if (itemIds.isEmpty()) {
+            buttonsPanel.add(new JLabel("No items defined."), "align center");
+        } else {
+            for (String id : itemIds) {
+                String trimmedId = id.trim();
+                if (trimmedId.isEmpty()) continue;
 
+                // Fetch button name
+                String buttonPropertyKey = propertyKey.contains(".") ? propertyKey.split("\\.")[1] : propertyKey;
+                String buttonText = uiStructure.getString(buttonPropertyKey + "." + trimmedId + ".name", "Unnamed (" + trimmedId + ")");
+                String htmlText = "<html><center>" + buttonText + "</center></html>";
+                JButton button = new JButton(htmlText);
+                button.setMargin(new Insets(10, 15, 10, 15));
+                button.setActionCommand(trimmedId);
+                button.addActionListener(e -> {
+                    if (buttonActionHandler != null) buttonActionHandler.accept(e.getActionCommand(), buttonText);
+                });
 
-        int currentRow = 2; // starts at 1 because 0 use by spacer
-
-        // for each button id
-        for (String id : itemIds) {
-            String trimmedId = id.trim();
-            if (trimmedId.isEmpty()) continue;
-
-            // fetch button name using propertyKey + button id
-            // if propertyKey has format rf.task or classification.model, only use final part to find button name
-            // e.g., to find name for rf.task.semanticSegmentation, search at task.semanticSegmentation (to avoid duplications in UIstrings)
-            // TODO : move this logic to StructureManager
-            String buttonPropertyKey = propertyKey;
-            if (propertyKey.contains(".")){
-                buttonPropertyKey = buttonPropertyKey.split("\\.")[1];
+                buttonsPanel.add(button, "w 40:100:160, growx, growy, align center, gapy 5");
             }
-
-            String buttonTextKey = buttonPropertyKey + "." + trimmedId + ".name";
-            String buttonText;
-            try {
-                buttonText = uiStructure.getString(buttonTextKey);
-            } catch (Exception e) {
-                System.err.println("Missing property for button name: " + buttonTextKey);
-                // if error, just use id
-                buttonText = "Unnamed (" + trimmedId + ")";
-            }
-
-            // create button
-            JButton button = new JButton(buttonText);
-            button.setActionCommand(trimmedId); // Set an action command to easily identify the button later
-
-            String finalButtonText = buttonText;
-            button.addActionListener(e -> {
-                if (buttonActionHandler != null) {
-                    buttonActionHandler.accept(e.getActionCommand(), finalButtonText);
-                }
-            });
-
-            // go to next line
-            gbc.gridy = currentRow++;
-            // add button to panel
-            buttonsPanel.add(button, gbc);
         }
-
-        // Spacer to push content up (keeps centered when expanding the window)
-        gbc.gridx = 0;
-        gbc.gridy = currentRow; // After the last button
-        gbc.weighty = 1.0; // Takes up space below the buttons
-        gbc.fill = GridBagConstraints.VERTICAL; // Fills that space vertically
-        JPanel bottomSpacer = new JPanel();
-        bottomSpacer.setOpaque(false); // Make it invisible
-        buttonsPanel.add(bottomSpacer, gbc);
-
         buttonsPanel.revalidate();
         buttonsPanel.repaint();
     }
 
-    public void setButtonActionHandler(BiConsumer<String, String> handler) {
-        this.buttonActionHandler = handler;
-    }
-
-    public JSplitPane  getSplitPane(){
-        return splitPane;
-    }
-
-
+    public void setButtonActionHandler(BiConsumer<String, String> handler) { this.buttonActionHandler = handler; }
+    public JSplitPane getSplitPane() { return splitPane; }
 }

@@ -5,7 +5,7 @@ import fr.curie.miclearner.structure.ContentLoader;
 
 import java.awt.event.ActionListener;
 
-public class ButtonDescriptionListPanel extends GenericButtonListPanel{
+public class ButtonDescriptionListPanel extends GenericButtonListPanel {
     protected DescriptionPanel descriptionPanel;
 
     /**
@@ -22,7 +22,6 @@ public class ButtonDescriptionListPanel extends GenericButtonListPanel{
         // add the description panel to the right side
         descriptionPanel = new DescriptionPanel(uiStructure);
         getSplitPane().setRightComponent(descriptionPanel);
-
     }
 
     // (only for ModelListPanel and taskListPanel)
